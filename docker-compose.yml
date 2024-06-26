@@ -1,0 +1,27 @@
+version: "3.8"
+services:
+  web:
+    build: .
+    volumes:
+      - ./site:/var/www/html
+    ports:
+      - 443:80
+  
+  db:
+    image: mysql 
+    volumes:
+      - ./db_data:/var/lib/mysql:rw
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345
+      - MYSQL_DATABASE=docker_database
+    ports:
+      - 3307:3306
+  
+  phpmyadmin:
+    image: phpmyadmin
+    links:
+      - db
+    environment:
+      - PMA_ARBITRARY=1
+    ports:
+      - 8080:80
